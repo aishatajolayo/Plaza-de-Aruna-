@@ -1,0 +1,136 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<h1>Dashboard</h1>
+<p class="date">{{ date_today|date:"l, F d, Y" }}</p>
+
+<div class="cards">
+    <div class="card">
+        <span>📅</span>
+        <h3>Total Bookings</h3>
+        <h3>{{ total_bookings }}</h3>
+        <small class="green">
+            ▲ {{ bookings_percent_change }}% from last month
+        </small>
+
+    </div>
+
+    <div class="card">
+        <span>📊</span>
+        <h3>Occupancy Rate</h3>
+        <h3>{{ occupancy_rate }}%</h3>
+        <small class="green">
+            ▲ {{ occupancy_percent_change }}% this week
+        </small>
+
+    </div>
+
+    <div class="card">
+        <span>💲</span>
+        <h3>Total Revenue</h3>
+        <h3>₦{{ total_revenue|floatformat:2 }}</h3>
+        <small class="green">
+            ▲ {{ revenue_percent_change }}% from last month
+        </small>
+
+    </div>
+
+    <div class="card">
+        <span>👤</span>
+        <h3>Active Guests</h3>
+        <h3>{{ active_guests }}</h3>
+        <small class="black">
+            {{ occupied_rooms }} rooms currently occupied
+        </small>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="card large">
+        <h3>Revenue Overview</h3>
+        <canvas id="revenueChart"></canvas>
+    </div>
+
+    <div class="card">
+        <h3>Room Status</h3>
+
+        <ul>
+            <li>🟢 Occupied ({{ room_status.occupied }})</li>
+            <li>🔵 Available ({{ room_status.available }})</li>
+            <li>🟡 Maintenance ({{ room_status.maintenance }})</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Recent Bookings</h2>
+
+    <div class="table">
+        <div class="row header">
+            <span>Guest</span>
+            <span>Room</span>
+            <span>Check-In</span>
+            <span>Check-Out</span>
+            <span>Status</span>
+            <span>Amount</span>
+        </div>
+        
+        {% for booking in recent_bookings %}
+<div class="row">
+    <span>{{ booking.user.get_full_name|default:booking.user.username }}</span>
+    <span>{{ booking.room }}</span>
+    <span>{{ booking.check_in }}</span>
+    <span>{{ booking.check_out }}</span>
+    <span>{{ booking.status }}</span>
+    <span>
+        ₦{% if booking.payment %}{{ booking.payment.amount|default:"0.00" }}{% else %}0.00{% endif %}
+    </span>
+</div>
+        {% endfor %}
+
+
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+
+    // Use the dynamic data from Django
+    const monthlyRevenue = JSON.parse('{{ monthly_revenue|escapejs }}');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+            datasets: [{
+                label: 'Revenue',
+                data: monthlyRevenue,
+                backgroundColor: '#3b82f6'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 20000 }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

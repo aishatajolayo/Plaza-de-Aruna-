@@ -1,0 +1,74 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Room Management{% endblock %}
+
+{% block content %}
+<h1>Room Management</h1>
+<p class="date">{{ date_today|date:"l, F d, Y" }}</p>
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <div>
+            <h3>Total Rooms</h3>
+            <p>{{ total_rooms }}</p>
+            <small>Available · Occupied · Maintenance</small>
+        </div>
+        <i class="fa-solid fa-bed"></i>
+    </div>
+
+    <div class="stat-card">
+        <div>
+            <h3>Available</h3>
+            <p>{{ available_rooms }}</p>
+        </div>
+        <i class="fa-solid fa-circle-check"></i>
+    </div>
+
+    <div class="stat-card">
+        <div>
+            <h3>Occupied</h3>
+            <p>{{ occupied_rooms }}</p>
+        </div>
+        <i class="fa-solid fa-users"></i>
+    </div>
+
+    <div class="stat-card">
+        <div>
+            <h3>Maintenance</h3>
+            <p>{{ maintenance_rooms }}</p>
+        </div>
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+    </div>
+
+</div>
+
+<div class="room-filters">
+    <button class="filter active" data-filter="all">All Rooms</button>
+    <button class="filter" data-filter="available">Available</button>
+    <button class="filter" data-filter="occupied">Occupied</button>
+    <button class="filter" data-filter="maintenance">Maintenance</button>
+</div>
+<div class="room-grid">
+{% for room in rooms %}
+    <div class="room-card {{ room.status }}">
+        <h2>Room {{ room.room_number }}</h2>
+        <p class="floor">Floor {{ room.floor }}</p>
+
+        <div class="room-meta">
+            <p><i class="fa-solid fa-bed"></i> {{ room.room_type }}</p>
+            <p><i class="fa-solid fa-users"></i> Guests: {{ room.guests }}</p>
+            <p><i class="fa-solid fa-naira-sign"></i> {{ room.price }}/night</p>
+        </div>
+
+        {% if room.status == 'available' %}
+            <button class="btn book">Book Room</button>
+
+        {% elif room.status == 'maintenance' %}
+            <button class="btn maintenance">Update Status</button>
+
+        {% endif %}
+    </div>
+{% endfor %}
+</div>
+
+{% endblock %}
