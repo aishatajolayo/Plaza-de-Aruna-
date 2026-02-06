@@ -1,6 +1,7 @@
 asgiref==3.11.1
 Django==4.2.28
 djangorestframework==3.16.1
+djangorestframework-simplejwt
 gunicorn==25.0.2
 django-cors-headers
 packaging==26.0
