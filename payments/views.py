@@ -130,8 +130,12 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Booking
+from .models import Payment
+from .serializers import PaymentSerializer
 from .paystack import initialize_payment, verify_payment
 from decimal import Decimal
+from bookings.models import Booking
+from rest_framework.permissions import IsAdminUser
 
 class InitializePaymentView(APIView):
     permission_classes = [AllowAny]
@@ -167,10 +171,39 @@ class VerifyPaymentView(APIView):
 
     def post(self, request):
         reference = request.data.get('reference')
+        booking_id = request.data.get('booking_id')  # You need to know which booking
 
-        if not reference:
-            return Response({"error": "reference is required"}, status=400)
+        if not reference or not booking_id:
+            return Response({"error": "reference and booking_id are required"}, status=400)
 
-        success = verify_payment(reference)
-        return Response({"success": success})
+        # Call your existing verify_payment function
+        success, amount = verify_payment(reference)  # Modify your verify_payment to return amount too
 
+        try:
+            booking = Booking.objects.get(id=booking_id)
+        except Booking.DoesNotExist:
+            return Response({"error": "Booking not found"}, status=404)
+
+        # Save or update payment record
+        payment, created = Payment.objects.update_or_create(
+            reference=reference,
+            defaults={
+                "booking": booking,
+                "status": "successful" if success else "failed",
+                "amount": amount if amount else 0.0
+            }
+        )
+
+        return Response({
+            "success": success,
+            "payment_id": payment.id,
+            "status": payment.status
+        })
+
+class PaymentListView(APIView):
+    permission_classes = [IsAdminUser]  # Only admin/dashboard can see
+
+    def get(self, request):
+        payments = Payment.objects.all().order_by('-created_at')
+        serializer = PaymentSerializer(payments, many=True)
+        return Response(serializer.data)
