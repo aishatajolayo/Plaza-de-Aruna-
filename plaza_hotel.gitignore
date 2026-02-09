@@ -1,6 +1,6 @@
 # Python
-*.pyc
 __pycache__/
+*.pyc
 *.pyo
 *.pyd
 
@@ -19,3 +19,4 @@ media/
 .vscode/
 .idea/
 *.swp
+EOL
