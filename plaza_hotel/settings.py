@@ -165,9 +165,6 @@ STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'accounts.User'
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
