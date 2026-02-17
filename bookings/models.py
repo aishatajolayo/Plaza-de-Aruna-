@@ -1,30 +1,6 @@
 from django.db import models
 from django.utils import timezone
-# Create your models hefrom django.db import models
 from accounts.models import User
-from rooms.models import Room
-"""class Booking(models.Model):
-    STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('checked_in', 'Checked In'),
-        ('checked_out', 'Checked Out'),
-        ('confirmed', 'Confirmed'),
-        ('cancelled', 'Cancelled'),
-    )
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    check_in = models.DateField()
-    check_out = models.DateField()
-    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
-    created_at = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return f"{self.user} - {self.room} - ₦{self.amount}"""
-    
-    
-from django.db import models
 from rooms.models import Room
 from datetime import date
 

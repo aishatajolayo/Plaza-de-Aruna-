@@ -121,12 +121,6 @@ def dashboard_view(request):
         ((current_month_revenue - last_month_revenue) / last_month_revenue) * 100
         if last_month_revenue > 0 else 0
     )
-    
-    """active_guests = Booking.objects.filter(
-        status="checked_in"
-    ).count()
-
-    occupied_rooms = active_guests"""  # 1 guest = 1 room
 
     context = {
         'date_today': now(),

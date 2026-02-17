@@ -64,6 +64,7 @@ INSTALLED_APPS = [
 
     'accounts',
     'rooms',
+    'newsletter',
     'bookings',
     'dashboard',
     'payments',
