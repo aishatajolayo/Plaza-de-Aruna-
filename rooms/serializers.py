@@ -15,5 +15,7 @@ class RoomSerializer(serializers.ModelSerializer):
             'description',
             'price',
             'status', 
-            'image'
+            'image',
+            'room_type_display',
+            'status_display',
         ]

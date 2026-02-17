@@ -18,7 +18,7 @@ class Room(models.Model):
     room_type = models.CharField(max_length=50, choices=ROOM_TYPE_CHOICES, default='deluxe_suite')
     description = models.TextField(default='A cozy room perfect for your stay.')
     price = models.DecimalField(max_digits=10, decimal_places=2, default=10000)
-    image = models.ImageField(upload_to='rooms/', default='rooms/default.jpg')
+    image = models.ImageField(upload_to='rooms/', null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='available')
     is_active = models.BooleanField(default=True)
 

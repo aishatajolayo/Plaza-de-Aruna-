@@ -1,0 +1,21 @@
+[
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$F5HN0K32Cn4x1qlk1ZvZds$LOfg70F1IVcuLfqS6cpLw9dhJbviDvpS3Z+a6EENrv0=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "jamiu",
+    "first_name": "",
+    "last_name": "",
+    "email": "horlarmhi09@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-02-17T17:06:58.309Z",
+    "role": "",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
