@@ -17,6 +17,13 @@ class BookingSerializer(serializers.ModelSerializer):
         read_only_fields = ['nights','total_price']
 
     def validate(self, data):
+        room = data['room']
+        
+        if room.status != 'available':
+            raise serializers.ValidationError(
+                "This room is not available for booking."
+            )
+            
         if data['check_out'] <= data['check_in']:
             raise serializers.ValidationError(
                 "Check-out date must be after check-in date"

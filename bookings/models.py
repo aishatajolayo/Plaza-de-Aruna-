@@ -31,5 +31,13 @@ class Booking(models.Model):
             super().save(*args, **kwargs)
 
 
+            # ROOM STATUS CONTROL
+        if self.status == 'pending':
+            self.room.status = 'pending'
+        elif self.status == 'confirmed':
+            self.room.status = 'booked'
+        elif self.status == 'cancelled':
+            self.room.status = 'available'
 
+        self.room.save()
 
